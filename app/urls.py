@@ -17,25 +17,26 @@ from dj_rest_auth.registration.views import VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import PasswordResetConfirmView
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    # Admin Management
-    path('admin/', admin.site.urls),
+                  # Admin Management
+                  path('admin/', admin.site.urls),
 
-    # REST Auth
-    path('api-auth/', include('rest_framework.urls')),
-    path('api-auth/dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('api-auth/dj-rest-auth/registration/account-confirm-email/<str:key>/', ConfirmEmailView.as_view()),
-    path('api-auth/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('api-auth/dj-rest-auth/account-confirm-email/', VerifyEmailView.as_view(),
-         name='account_email_verification_sent'),
-    path('api-auth/v1/dj-rest-auth/password/reset/confirm/<slug:uidb64>/<slug:token>/',
-         PasswordResetConfirmView.as_view(),
-         name='password_reset_confirm'),
+                  # REST Auth
+                  path('api/', include('rest_framework.urls')),
+                  path('api/dj-rest-auth/', include('dj_rest_auth.urls')),
+                  path('api/dj-rest-auth/registration/account-confirm-email/<str:key>/', ConfirmEmailView.as_view()),
+                  path('api/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+                  path('api/dj-rest-auth/account-confirm-email/', VerifyEmailView.as_view(),
+                       name='account_email_verification_sent'),
+                  path('api/dj-rest-auth/password/reset/confirm/<slug:uidb64>/<slug:token>/',
+                       PasswordResetConfirmView.as_view(),
+                       name='password_reset_confirm'),
 
-    # User Management
+                  # User Management
 
-
-    # REST management
-    path('api/', include('todos.urls'))
-]
+                  # REST management
+                  path('api/', include('todos.urls'))
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
